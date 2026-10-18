@@ -7,7 +7,7 @@
 | 18 October 2026 | Documented session-based authentication and the logout endpoint, added the organiser dashboard of owned events, aligned routes, request fields and status codes with the implemented API, and added result-history context fields. | Lecturer feedback on the Part 1 plan. |
 | 18 October 2026 | Added the enrolment status endpoint (`PUT /api/events/{eventId}/enrolments/{enrolmentId}/status`), enrolment counts on events and the organiser dashboard, and corrected the event delete response to 204. | Endpoints needed by the Part 3 organiser enrolments page, dashboard and colour-coded statuses. |
 
-The original Part 1 plan is preserved in the repository's commit history.
+
 
 
 ## Overview
