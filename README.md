@@ -316,8 +316,13 @@ Two GitHub Actions workflows live in `.github/workflows/` (GitHub, n.d.-a):
 
 - `dotnet.yml` restores, builds the API in Release mode and runs the full test suite on every push and pull request to `main`, `master` and `part-2`.
 - `part1-validation.yml` checks that the `docs` folder, the ERD, the endpoint plan and the SQL script are present and that the SQL script creates all six tables.
+  
 **Part 1 green build**
+
+
 ![Part 1 CI/CD green build](docs/workflow-validation.png)
+
+
 **Part 2 green build**
 
 ![Part 2 CI/CD green build](docs/part2-ci-build.png)
