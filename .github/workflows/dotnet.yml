@@ -1,0 +1,30 @@
+# Workflow structure follows GitHub (n.d.) About GitHub Actions: https://docs.github.com/en/actions/about-github-actions
+name: RaceDay API CI
+
+on:
+  push:
+    branches: [main, master, part-2]
+  pull_request:
+    branches: [main, master, part-2]
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore RaceDay.Api.Tests/RaceDay.Api.Tests.csproj
+
+      - name: Build API
+        run: dotnet build RaceDay.Api/RaceDay.Api.csproj --configuration Release --no-restore
+
+      - name: Run automated tests
+        run: dotnet test RaceDay.Api.Tests/RaceDay.Api.Tests.csproj --configuration Release

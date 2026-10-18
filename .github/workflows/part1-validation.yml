@@ -1,0 +1,57 @@
+# Workflow structure follows GitHub (n.d.) About GitHub Actions: https://docs.github.com/en/actions/about-github-actions
+name: RaceDay Part 1 Validation
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate-part1:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check required folders
+        run: |
+          test -d docs
+          test -d .github/workflows
+
+      - name: Check required Part 1 files
+        run: |
+          test -f docs/RaceDay-ERD.pdf
+          test -f docs/API-Endpoint-Plan.md
+          test -f docs/RaceDay.sql
+
+      - name: Check files are not empty
+        run: |
+          test -s docs/RaceDay-ERD.pdf
+          test -s docs/API-Endpoint-Plan.md
+          test -s docs/RaceDay.sql
+
+      - name: Check SQL tables
+        run: |
+          grep -qi "CREATE TABLE dbo.Roles" docs/RaceDay.sql
+          grep -qi "CREATE TABLE dbo.Users" docs/RaceDay.sql
+          grep -qi "CREATE TABLE dbo.Events" docs/RaceDay.sql
+          grep -qi "CREATE TABLE dbo.Categories" docs/RaceDay.sql
+          grep -qi "CREATE TABLE dbo.Enrolments" docs/RaceDay.sql
+          grep -qi "CREATE TABLE dbo.Results" docs/RaceDay.sql
+
+      - name: Check API endpoint plan sections
+        run: |
+          grep -qi "Authentication" docs/API-Endpoint-Plan.md
+          grep -qi "User Profile" docs/API-Endpoint-Plan.md
+          grep -qi "File Uploads" docs/API-Endpoint-Plan.md
+          grep -qi "Events" docs/API-Endpoint-Plan.md
+          grep -qi "Categories" docs/API-Endpoint-Plan.md
+          grep -qi "Event Enrolments" docs/API-Endpoint-Plan.md
+          grep -qi "Results" docs/API-Endpoint-Plan.md
+
+      - name: Check ERD file
+        run: |
+          test -s docs/RaceDay-ERD.pdf
+
+      - name: Validation complete
+        run: echo "RaceDay Part 1 validation completed successfully."

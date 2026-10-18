@@ -1,0 +1,1716 @@
+{
+    "swagger":  "2.0",
+    "info":  {
+                 "title":  "RaceDay API",
+                 "description":  "RaceDay event management API",
+                 "version":  "v1"
+             },
+    "paths":  {
+                  "/api/auth/register":  {
+                                             "post":  {
+                                                          "tags":  [
+                                                                       "Auth"
+                                                                   ],
+                                                          "summary":  "Registers a new account with the Participant or Organiser role.",
+                                                          "consumes":  [
+                                                                           "application/json",
+                                                                           "text/json",
+                                                                           "application/*+json"
+                                                                       ],
+                                                          "produces":  [
+                                                                           "text/plain",
+                                                                           "application/json",
+                                                                           "text/json"
+                                                                       ],
+                                                          "parameters":  [
+                                                                             {
+                                                                                 "in":  "body",
+                                                                                 "name":  "body",
+                                                                                 "description":  "The new user\u0027s name, email, password, optional phone number, and role.",
+                                                                                 "schema":  {
+                                                                                                "$ref":  "#/definitions/RegisterRequest"
+                                                                                            }
+                                                                             }
+                                                                         ],
+                                                          "responses":  {
+                                                                            "201":  {
+                                                                                        "description":  "The account was created successfully."
+                                                                                    },
+                                                                            "400":  {
+                                                                                        "description":  "The request contains invalid information.",
+                                                                                        "schema":  {
+                                                                                                       "$ref":  "#/definitions/ProblemDetails"
+                                                                                                   }
+                                                                                    },
+                                                                            "409":  {
+                                                                                        "description":  "An account with this email already exists.",
+                                                                                        "schema":  {
+                                                                                                       "$ref":  "#/definitions/ProblemDetails"
+                                                                                                   }
+                                                                                    },
+                                                                            "500":  {
+                                                                                        "description":  "The requested role is not configured."
+                                                                                    }
+                                                                        }
+                                                      }
+                                         },
+                  "/api/auth/login":  {
+                                          "post":  {
+                                                       "tags":  [
+                                                                    "Auth"
+                                                                ],
+                                                       "summary":  "Authenticates a user and creates a session.",
+                                                       "consumes":  [
+                                                                        "application/json",
+                                                                        "text/json",
+                                                                        "application/*+json"
+                                                                    ],
+                                                       "produces":  [
+                                                                        "text/plain",
+                                                                        "application/json",
+                                                                        "text/json"
+                                                                    ],
+                                                       "parameters":  [
+                                                                          {
+                                                                              "in":  "body",
+                                                                              "name":  "body",
+                                                                              "description":  "The user\u0027s registered email and password.",
+                                                                              "schema":  {
+                                                                                             "$ref":  "#/definitions/LoginRequest"
+                                                                                         }
+                                                                          }
+                                                                      ],
+                                                       "responses":  {
+                                                                         "200":  {
+                                                                                     "description":  "Login succeeded and a session was created."
+                                                                                 },
+                                                                         "400":  {
+                                                                                     "description":  "The request contains invalid information.",
+                                                                                     "schema":  {
+                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                }
+                                                                                 },
+                                                                         "401":  {
+                                                                                     "description":  "The credentials are invalid or the account role is unavailable.",
+                                                                                     "schema":  {
+                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                }
+                                                                                 }
+                                                                     }
+                                                   }
+                                      },
+                  "/api/auth/logout":  {
+                                           "post":  {
+                                                        "tags":  [
+                                                                     "Auth"
+                                                                 ],
+                                                        "summary":  "Ends the current session by clearing its session data.",
+                                                        "responses":  {
+                                                                          "200":  {
+                                                                                      "description":  "The session was cleared successfully."
+                                                                                  }
+                                                                      }
+                                                    }
+                                       },
+                  "/api/events/{eventId}/categories":  {
+                                                           "get":  {
+                                                                       "tags":  [
+                                                                                    "Categories"
+                                                                                ],
+                                                                       "produces":  [
+                                                                                        "text/plain",
+                                                                                        "application/json",
+                                                                                        "text/json"
+                                                                                    ],
+                                                                       "parameters":  [
+                                                                                          {
+                                                                                              "in":  "path",
+                                                                                              "name":  "eventId",
+                                                                                              "required":  true,
+                                                                                              "type":  "integer",
+                                                                                              "format":  "int32"
+                                                                                          }
+                                                                                      ],
+                                                                       "responses":  {
+                                                                                         "200":  {
+                                                                                                     "description":  "OK"
+                                                                                                 },
+                                                                                         "404":  {
+                                                                                                     "description":  "Not Found",
+                                                                                                     "schema":  {
+                                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                }
+                                                                                                 }
+                                                                                     }
+                                                                   },
+                                                           "post":  {
+                                                                        "tags":  [
+                                                                                     "Categories"
+                                                                                 ],
+                                                                        "consumes":  [
+                                                                                         "application/json",
+                                                                                         "text/json",
+                                                                                         "application/*+json"
+                                                                                     ],
+                                                                        "produces":  [
+                                                                                         "text/plain",
+                                                                                         "application/json",
+                                                                                         "text/json"
+                                                                                     ],
+                                                                        "parameters":  [
+                                                                                           {
+                                                                                               "in":  "path",
+                                                                                               "name":  "eventId",
+                                                                                               "required":  true,
+                                                                                               "type":  "integer",
+                                                                                               "format":  "int32"
+                                                                                           },
+                                                                                           {
+                                                                                               "in":  "body",
+                                                                                               "name":  "body",
+                                                                                               "schema":  {
+                                                                                                              "$ref":  "#/definitions/CreateCategoryRequest"
+                                                                                                          }
+                                                                                           }
+                                                                                       ],
+                                                                        "responses":  {
+                                                                                          "201":  {
+                                                                                                      "description":  "Created"
+                                                                                                  },
+                                                                                          "400":  {
+                                                                                                      "description":  "Bad Request",
+                                                                                                      "schema":  {
+                                                                                                                     "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                 }
+                                                                                                  },
+                                                                                          "401":  {
+                                                                                                      "description":  "Unauthorized",
+                                                                                                      "schema":  {
+                                                                                                                     "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                 }
+                                                                                                  },
+                                                                                          "403":  {
+                                                                                                      "description":  "Forbidden",
+                                                                                                      "schema":  {
+                                                                                                                     "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                 }
+                                                                                                  },
+                                                                                          "404":  {
+                                                                                                      "description":  "Not Found",
+                                                                                                      "schema":  {
+                                                                                                                     "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                 }
+                                                                                                  },
+                                                                                          "409":  {
+                                                                                                      "description":  "Conflict",
+                                                                                                      "schema":  {
+                                                                                                                     "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                 }
+                                                                                                  }
+                                                                                      }
+                                                                    }
+                                                       },
+                  "/api/categories/{categoryId}":  {
+                                                       "get":  {
+                                                                   "tags":  [
+                                                                                "Categories"
+                                                                            ],
+                                                                   "produces":  [
+                                                                                    "text/plain",
+                                                                                    "application/json",
+                                                                                    "text/json"
+                                                                                ],
+                                                                   "parameters":  [
+                                                                                      {
+                                                                                          "in":  "path",
+                                                                                          "name":  "categoryId",
+                                                                                          "required":  true,
+                                                                                          "type":  "integer",
+                                                                                          "format":  "int32"
+                                                                                      }
+                                                                                  ],
+                                                                   "responses":  {
+                                                                                     "200":  {
+                                                                                                 "description":  "OK"
+                                                                                             },
+                                                                                     "404":  {
+                                                                                                 "description":  "Not Found",
+                                                                                                 "schema":  {
+                                                                                                                "$ref":  "#/definitions/ProblemDetails"
+                                                                                                            }
+                                                                                             }
+                                                                                 }
+                                                               },
+                                                       "put":  {
+                                                                   "tags":  [
+                                                                                "Categories"
+                                                                            ],
+                                                                   "consumes":  [
+                                                                                    "application/json",
+                                                                                    "text/json",
+                                                                                    "application/*+json"
+                                                                                ],
+                                                                   "produces":  [
+                                                                                    "text/plain",
+                                                                                    "application/json",
+                                                                                    "text/json"
+                                                                                ],
+                                                                   "parameters":  [
+                                                                                      {
+                                                                                          "in":  "path",
+                                                                                          "name":  "categoryId",
+                                                                                          "required":  true,
+                                                                                          "type":  "integer",
+                                                                                          "format":  "int32"
+                                                                                      },
+                                                                                      {
+                                                                                          "in":  "body",
+                                                                                          "name":  "body",
+                                                                                          "schema":  {
+                                                                                                         "$ref":  "#/definitions/CreateCategoryRequest"
+                                                                                                     }
+                                                                                      }
+                                                                                  ],
+                                                                   "responses":  {
+                                                                                     "200":  {
+                                                                                                 "description":  "OK"
+                                                                                             },
+                                                                                     "400":  {
+                                                                                                 "description":  "Bad Request",
+                                                                                                 "schema":  {
+                                                                                                                "$ref":  "#/definitions/ProblemDetails"
+                                                                                                            }
+                                                                                             },
+                                                                                     "401":  {
+                                                                                                 "description":  "Unauthorized",
+                                                                                                 "schema":  {
+                                                                                                                "$ref":  "#/definitions/ProblemDetails"
+                                                                                                            }
+                                                                                             },
+                                                                                     "403":  {
+                                                                                                 "description":  "Forbidden",
+                                                                                                 "schema":  {
+                                                                                                                "$ref":  "#/definitions/ProblemDetails"
+                                                                                                            }
+                                                                                             },
+                                                                                     "404":  {
+                                                                                                 "description":  "Not Found",
+                                                                                                 "schema":  {
+                                                                                                                "$ref":  "#/definitions/ProblemDetails"
+                                                                                                            }
+                                                                                             },
+                                                                                     "409":  {
+                                                                                                 "description":  "Conflict",
+                                                                                                 "schema":  {
+                                                                                                                "$ref":  "#/definitions/ProblemDetails"
+                                                                                                            }
+                                                                                             }
+                                                                                 }
+                                                               },
+                                                       "delete":  {
+                                                                      "tags":  [
+                                                                                   "Categories"
+                                                                               ],
+                                                                      "produces":  [
+                                                                                       "text/plain",
+                                                                                       "application/json",
+                                                                                       "text/json"
+                                                                                   ],
+                                                                      "parameters":  [
+                                                                                         {
+                                                                                             "in":  "path",
+                                                                                             "name":  "categoryId",
+                                                                                             "required":  true,
+                                                                                             "type":  "integer",
+                                                                                             "format":  "int32"
+                                                                                         }
+                                                                                     ],
+                                                                      "responses":  {
+                                                                                        "200":  {
+                                                                                                    "description":  "OK"
+                                                                                                },
+                                                                                        "401":  {
+                                                                                                    "description":  "Unauthorized",
+                                                                                                    "schema":  {
+                                                                                                                   "$ref":  "#/definitions/ProblemDetails"
+                                                                                                               }
+                                                                                                },
+                                                                                        "403":  {
+                                                                                                    "description":  "Forbidden",
+                                                                                                    "schema":  {
+                                                                                                                   "$ref":  "#/definitions/ProblemDetails"
+                                                                                                               }
+                                                                                                },
+                                                                                        "404":  {
+                                                                                                    "description":  "Not Found",
+                                                                                                    "schema":  {
+                                                                                                                   "$ref":  "#/definitions/ProblemDetails"
+                                                                                                               }
+                                                                                                },
+                                                                                        "409":  {
+                                                                                                    "description":  "Conflict",
+                                                                                                    "schema":  {
+                                                                                                                   "$ref":  "#/definitions/ProblemDetails"
+                                                                                                               }
+                                                                                                }
+                                                                                    }
+                                                                  }
+                                                   },
+                  "/api/events/{eventId}/enrolments":  {
+                                                           "post":  {
+                                                                        "tags":  [
+                                                                                     "Enrolments"
+                                                                                 ],
+                                                                        "consumes":  [
+                                                                                         "application/json",
+                                                                                         "text/json",
+                                                                                         "application/*+json"
+                                                                                     ],
+                                                                        "produces":  [
+                                                                                         "text/plain",
+                                                                                         "application/json",
+                                                                                         "text/json"
+                                                                                     ],
+                                                                        "parameters":  [
+                                                                                           {
+                                                                                               "in":  "path",
+                                                                                               "name":  "eventId",
+                                                                                               "required":  true,
+                                                                                               "type":  "integer",
+                                                                                               "format":  "int32"
+                                                                                           },
+                                                                                           {
+                                                                                               "in":  "body",
+                                                                                               "name":  "body",
+                                                                                               "schema":  {
+                                                                                                              "$ref":  "#/definitions/CreateEventEnrolmentRequest"
+                                                                                                          }
+                                                                                           }
+                                                                                       ],
+                                                                        "responses":  {
+                                                                                          "201":  {
+                                                                                                      "description":  "Created"
+                                                                                                  },
+                                                                                          "400":  {
+                                                                                                      "description":  "Bad Request",
+                                                                                                      "schema":  {
+                                                                                                                     "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                 }
+                                                                                                  },
+                                                                                          "401":  {
+                                                                                                      "description":  "Unauthorized",
+                                                                                                      "schema":  {
+                                                                                                                     "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                 }
+                                                                                                  },
+                                                                                          "403":  {
+                                                                                                      "description":  "Forbidden",
+                                                                                                      "schema":  {
+                                                                                                                     "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                 }
+                                                                                                  },
+                                                                                          "404":  {
+                                                                                                      "description":  "Not Found",
+                                                                                                      "schema":  {
+                                                                                                                     "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                 }
+                                                                                                  },
+                                                                                          "409":  {
+                                                                                                      "description":  "Conflict",
+                                                                                                      "schema":  {
+                                                                                                                     "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                 }
+                                                                                                  }
+                                                                                      }
+                                                                    },
+                                                           "get":  {
+                                                                       "tags":  [
+                                                                                    "Organiser"
+                                                                                ],
+                                                                       "produces":  [
+                                                                                        "text/plain",
+                                                                                        "application/json",
+                                                                                        "text/json"
+                                                                                    ],
+                                                                       "parameters":  [
+                                                                                          {
+                                                                                              "in":  "path",
+                                                                                              "name":  "eventId",
+                                                                                              "required":  true,
+                                                                                              "type":  "integer",
+                                                                                              "format":  "int32"
+                                                                                          }
+                                                                                      ],
+                                                                       "responses":  {
+                                                                                         "200":  {
+                                                                                                     "description":  "OK"
+                                                                                                 },
+                                                                                         "401":  {
+                                                                                                     "description":  "Unauthorized",
+                                                                                                     "schema":  {
+                                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                }
+                                                                                                 },
+                                                                                         "403":  {
+                                                                                                     "description":  "Forbidden",
+                                                                                                     "schema":  {
+                                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                }
+                                                                                                 },
+                                                                                         "404":  {
+                                                                                                     "description":  "Not Found",
+                                                                                                     "schema":  {
+                                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                }
+                                                                                                 }
+                                                                                     }
+                                                                   }
+                                                       },
+                  "/api/enrolments":  {
+                                          "post":  {
+                                                       "tags":  [
+                                                                    "Enrolments"
+                                                                ],
+                                                       "consumes":  [
+                                                                        "application/json",
+                                                                        "text/json",
+                                                                        "application/*+json"
+                                                                    ],
+                                                       "produces":  [
+                                                                        "text/plain",
+                                                                        "application/json",
+                                                                        "text/json"
+                                                                    ],
+                                                       "parameters":  [
+                                                                          {
+                                                                              "in":  "body",
+                                                                              "name":  "body",
+                                                                              "schema":  {
+                                                                                             "$ref":  "#/definitions/CreateEnrolmentRequest"
+                                                                                         }
+                                                                          }
+                                                                      ],
+                                                       "responses":  {
+                                                                         "201":  {
+                                                                                     "description":  "Created"
+                                                                                 },
+                                                                         "400":  {
+                                                                                     "description":  "Bad Request",
+                                                                                     "schema":  {
+                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                }
+                                                                                 },
+                                                                         "401":  {
+                                                                                     "description":  "Unauthorized",
+                                                                                     "schema":  {
+                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                }
+                                                                                 },
+                                                                         "403":  {
+                                                                                     "description":  "Forbidden",
+                                                                                     "schema":  {
+                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                }
+                                                                                 },
+                                                                         "404":  {
+                                                                                     "description":  "Not Found",
+                                                                                     "schema":  {
+                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                }
+                                                                                 },
+                                                                         "409":  {
+                                                                                     "description":  "Conflict",
+                                                                                     "schema":  {
+                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                }
+                                                                                 }
+                                                                     }
+                                                   },
+                                          "get":  {
+                                                      "tags":  [
+                                                                   "Enrolments"
+                                                               ],
+                                                      "produces":  [
+                                                                       "text/plain",
+                                                                       "application/json",
+                                                                       "text/json"
+                                                                   ],
+                                                      "responses":  {
+                                                                        "200":  {
+                                                                                    "description":  "OK"
+                                                                                },
+                                                                        "401":  {
+                                                                                    "description":  "Unauthorized",
+                                                                                    "schema":  {
+                                                                                                   "$ref":  "#/definitions/ProblemDetails"
+                                                                                               }
+                                                                                },
+                                                                        "403":  {
+                                                                                    "description":  "Forbidden",
+                                                                                    "schema":  {
+                                                                                                   "$ref":  "#/definitions/ProblemDetails"
+                                                                                               }
+                                                                                }
+                                                                    }
+                                                  }
+                                      },
+                  "/api/enrolments/{enrolmentId}":  {
+                                                        "get":  {
+                                                                    "tags":  [
+                                                                                 "Enrolments"
+                                                                             ],
+                                                                    "produces":  [
+                                                                                     "text/plain",
+                                                                                     "application/json",
+                                                                                     "text/json"
+                                                                                 ],
+                                                                    "parameters":  [
+                                                                                       {
+                                                                                           "in":  "path",
+                                                                                           "name":  "enrolmentId",
+                                                                                           "required":  true,
+                                                                                           "type":  "integer",
+                                                                                           "format":  "int32"
+                                                                                       }
+                                                                                   ],
+                                                                    "responses":  {
+                                                                                      "200":  {
+                                                                                                  "description":  "OK"
+                                                                                              },
+                                                                                      "401":  {
+                                                                                                  "description":  "Unauthorized",
+                                                                                                  "schema":  {
+                                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                                             }
+                                                                                              },
+                                                                                      "403":  {
+                                                                                                  "description":  "Forbidden",
+                                                                                                  "schema":  {
+                                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                                             }
+                                                                                              },
+                                                                                      "404":  {
+                                                                                                  "description":  "Not Found",
+                                                                                                  "schema":  {
+                                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                                             }
+                                                                                              }
+                                                                                  }
+                                                                },
+                                                        "delete":  {
+                                                                       "tags":  [
+                                                                                    "Enrolments"
+                                                                                ],
+                                                                       "produces":  [
+                                                                                        "text/plain",
+                                                                                        "application/json",
+                                                                                        "text/json"
+                                                                                    ],
+                                                                       "parameters":  [
+                                                                                          {
+                                                                                              "in":  "path",
+                                                                                              "name":  "enrolmentId",
+                                                                                              "required":  true,
+                                                                                              "type":  "integer",
+                                                                                              "format":  "int32"
+                                                                                          }
+                                                                                      ],
+                                                                       "responses":  {
+                                                                                         "204":  {
+                                                                                                     "description":  "No Content"
+                                                                                                 },
+                                                                                         "401":  {
+                                                                                                     "description":  "Unauthorized",
+                                                                                                     "schema":  {
+                                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                }
+                                                                                                 },
+                                                                                         "403":  {
+                                                                                                     "description":  "Forbidden",
+                                                                                                     "schema":  {
+                                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                }
+                                                                                                 },
+                                                                                         "404":  {
+                                                                                                     "description":  "Not Found",
+                                                                                                     "schema":  {
+                                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                }
+                                                                                                 },
+                                                                                         "409":  {
+                                                                                                     "description":  "Conflict",
+                                                                                                     "schema":  {
+                                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                }
+                                                                                                 }
+                                                                                     }
+                                                                   }
+                                                    },
+                  "/api/enrolments/mine":  {
+                                               "get":  {
+                                                           "tags":  [
+                                                                        "Enrolments"
+                                                                    ],
+                                                           "produces":  [
+                                                                            "text/plain",
+                                                                            "application/json",
+                                                                            "text/json"
+                                                                        ],
+                                                           "responses":  {
+                                                                             "200":  {
+                                                                                         "description":  "OK"
+                                                                                     },
+                                                                             "401":  {
+                                                                                         "description":  "Unauthorized",
+                                                                                         "schema":  {
+                                                                                                        "$ref":  "#/definitions/ProblemDetails"
+                                                                                                    }
+                                                                                     },
+                                                                             "403":  {
+                                                                                         "description":  "Forbidden",
+                                                                                         "schema":  {
+                                                                                                        "$ref":  "#/definitions/ProblemDetails"
+                                                                                                    }
+                                                                                     }
+                                                                         }
+                                                       }
+                                           },
+                  "/api/events":  {
+                                      "get":  {
+                                                  "tags":  [
+                                                               "Events"
+                                                           ],
+                                                  "parameters":  [
+                                                                     {
+                                                                         "in":  "query",
+                                                                         "name":  "eventType",
+                                                                         "type":  "string"
+                                                                     },
+                                                                     {
+                                                                         "in":  "query",
+                                                                         "name":  "eventDate",
+                                                                         "type":  "string",
+                                                                         "format":  "date-time"
+                                                                     },
+                                                                     {
+                                                                         "in":  "query",
+                                                                         "name":  "location",
+                                                                         "type":  "string"
+                                                                     }
+                                                                 ],
+                                                  "responses":  {
+                                                                    "200":  {
+                                                                                "description":  "OK"
+                                                                            }
+                                                                }
+                                              },
+                                      "post":  {
+                                                   "tags":  [
+                                                                "Events"
+                                                            ],
+                                                   "consumes":  [
+                                                                    "application/json",
+                                                                    "text/json",
+                                                                    "application/*+json"
+                                                                ],
+                                                   "produces":  [
+                                                                    "text/plain",
+                                                                    "application/json",
+                                                                    "text/json"
+                                                                ],
+                                                   "parameters":  [
+                                                                      {
+                                                                          "in":  "body",
+                                                                          "name":  "body",
+                                                                          "schema":  {
+                                                                                         "$ref":  "#/definitions/CreateEventRequest"
+                                                                                     }
+                                                                      }
+                                                                  ],
+                                                   "responses":  {
+                                                                     "201":  {
+                                                                                 "description":  "Created"
+                                                                             },
+                                                                     "400":  {
+                                                                                 "description":  "Bad Request",
+                                                                                 "schema":  {
+                                                                                                "$ref":  "#/definitions/ProblemDetails"
+                                                                                            }
+                                                                             },
+                                                                     "401":  {
+                                                                                 "description":  "Unauthorized",
+                                                                                 "schema":  {
+                                                                                                "$ref":  "#/definitions/ProblemDetails"
+                                                                                            }
+                                                                             },
+                                                                     "403":  {
+                                                                                 "description":  "Forbidden",
+                                                                                 "schema":  {
+                                                                                                "$ref":  "#/definitions/ProblemDetails"
+                                                                                            }
+                                                                             },
+                                                                     "409":  {
+                                                                                 "description":  "Conflict",
+                                                                                 "schema":  {
+                                                                                                "$ref":  "#/definitions/ProblemDetails"
+                                                                                            }
+                                                                             }
+                                                                 }
+                                               }
+                                  },
+                  "/api/events/{id}":  {
+                                           "get":  {
+                                                       "tags":  [
+                                                                    "Events"
+                                                                ],
+                                                       "produces":  [
+                                                                        "text/plain",
+                                                                        "application/json",
+                                                                        "text/json"
+                                                                    ],
+                                                       "parameters":  [
+                                                                          {
+                                                                              "in":  "path",
+                                                                              "name":  "id",
+                                                                              "required":  true,
+                                                                              "type":  "integer",
+                                                                              "format":  "int32"
+                                                                          }
+                                                                      ],
+                                                       "responses":  {
+                                                                         "200":  {
+                                                                                     "description":  "OK"
+                                                                                 },
+                                                                         "404":  {
+                                                                                     "description":  "Not Found",
+                                                                                     "schema":  {
+                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                }
+                                                                                 }
+                                                                     }
+                                                   },
+                                           "put":  {
+                                                       "tags":  [
+                                                                    "Events"
+                                                                ],
+                                                       "consumes":  [
+                                                                        "application/json",
+                                                                        "text/json",
+                                                                        "application/*+json"
+                                                                    ],
+                                                       "produces":  [
+                                                                        "text/plain",
+                                                                        "application/json",
+                                                                        "text/json"
+                                                                    ],
+                                                       "parameters":  [
+                                                                          {
+                                                                              "in":  "path",
+                                                                              "name":  "id",
+                                                                              "required":  true,
+                                                                              "type":  "integer",
+                                                                              "format":  "int32"
+                                                                          },
+                                                                          {
+                                                                              "in":  "body",
+                                                                              "name":  "body",
+                                                                              "schema":  {
+                                                                                             "$ref":  "#/definitions/CreateEventRequest"
+                                                                                         }
+                                                                          }
+                                                                      ],
+                                                       "responses":  {
+                                                                         "200":  {
+                                                                                     "description":  "OK"
+                                                                                 },
+                                                                         "400":  {
+                                                                                     "description":  "Bad Request",
+                                                                                     "schema":  {
+                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                }
+                                                                                 },
+                                                                         "401":  {
+                                                                                     "description":  "Unauthorized",
+                                                                                     "schema":  {
+                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                }
+                                                                                 },
+                                                                         "403":  {
+                                                                                     "description":  "Forbidden",
+                                                                                     "schema":  {
+                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                }
+                                                                                 },
+                                                                         "404":  {
+                                                                                     "description":  "Not Found",
+                                                                                     "schema":  {
+                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                }
+                                                                                 },
+                                                                         "409":  {
+                                                                                     "description":  "Conflict",
+                                                                                     "schema":  {
+                                                                                                    "$ref":  "#/definitions/ProblemDetails"
+                                                                                                }
+                                                                                 }
+                                                                     }
+                                                   },
+                                           "delete":  {
+                                                          "tags":  [
+                                                                       "Events"
+                                                                   ],
+                                                          "produces":  [
+                                                                           "text/plain",
+                                                                           "application/json",
+                                                                           "text/json"
+                                                                       ],
+                                                          "parameters":  [
+                                                                             {
+                                                                                 "in":  "path",
+                                                                                 "name":  "id",
+                                                                                 "required":  true,
+                                                                                 "type":  "integer",
+                                                                                 "format":  "int32"
+                                                                             }
+                                                                         ],
+                                                          "responses":  {
+                                                                            "200":  {
+                                                                                        "description":  "OK"
+                                                                                    },
+                                                                            "401":  {
+                                                                                        "description":  "Unauthorized",
+                                                                                        "schema":  {
+                                                                                                       "$ref":  "#/definitions/ProblemDetails"
+                                                                                                   }
+                                                                                    },
+                                                                            "403":  {
+                                                                                        "description":  "Forbidden",
+                                                                                        "schema":  {
+                                                                                                       "$ref":  "#/definitions/ProblemDetails"
+                                                                                                   }
+                                                                                    },
+                                                                            "404":  {
+                                                                                        "description":  "Not Found",
+                                                                                        "schema":  {
+                                                                                                       "$ref":  "#/definitions/ProblemDetails"
+                                                                                                   }
+                                                                                    },
+                                                                            "409":  {
+                                                                                        "description":  "Conflict",
+                                                                                        "schema":  {
+                                                                                                       "$ref":  "#/definitions/ProblemDetails"
+                                                                                                   }
+                                                                                    }
+                                                                        }
+                                                      }
+                                       },
+                  "/api/events/{eventId}/banner":  {
+                                                       "post":  {
+                                                                    "tags":  [
+                                                                                 "Events"
+                                                                             ],
+                                                                    "consumes":  [
+                                                                                     "multipart/form-data"
+                                                                                 ],
+                                                                    "produces":  [
+                                                                                     "text/plain",
+                                                                                     "application/json",
+                                                                                     "text/json"
+                                                                                 ],
+                                                                    "parameters":  [
+                                                                                       {
+                                                                                           "in":  "path",
+                                                                                           "name":  "eventId",
+                                                                                           "required":  true,
+                                                                                           "type":  "integer",
+                                                                                           "format":  "int32"
+                                                                                       },
+                                                                                       {
+                                                                                           "in":  "formData",
+                                                                                           "name":  "File",
+                                                                                           "required":  true,
+                                                                                           "type":  "file"
+                                                                                       }
+                                                                                   ],
+                                                                    "responses":  {
+                                                                                      "200":  {
+                                                                                                  "description":  "OK"
+                                                                                              },
+                                                                                      "400":  {
+                                                                                                  "description":  "Bad Request",
+                                                                                                  "schema":  {
+                                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                                             }
+                                                                                              },
+                                                                                      "401":  {
+                                                                                                  "description":  "Unauthorized",
+                                                                                                  "schema":  {
+                                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                                             }
+                                                                                              },
+                                                                                      "403":  {
+                                                                                                  "description":  "Forbidden",
+                                                                                                  "schema":  {
+                                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                                             }
+                                                                                              },
+                                                                                      "404":  {
+                                                                                                  "description":  "Not Found",
+                                                                                                  "schema":  {
+                                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                                             }
+                                                                                              },
+                                                                                      "503":  {
+                                                                                                  "description":  "Service Unavailable"
+                                                                                              }
+                                                                                  }
+                                                                }
+                                                   },
+                  "/api/organiser/dashboard":  {
+                                                   "get":  {
+                                                               "tags":  [
+                                                                            "Organiser"
+                                                                        ],
+                                                               "produces":  [
+                                                                                "text/plain",
+                                                                                "application/json",
+                                                                                "text/json"
+                                                                            ],
+                                                               "responses":  {
+                                                                                 "200":  {
+                                                                                             "description":  "OK"
+                                                                                         },
+                                                                                 "401":  {
+                                                                                             "description":  "Unauthorized",
+                                                                                             "schema":  {
+                                                                                                            "$ref":  "#/definitions/ProblemDetails"
+                                                                                                        }
+                                                                                         },
+                                                                                 "403":  {
+                                                                                             "description":  "Forbidden",
+                                                                                             "schema":  {
+                                                                                                            "$ref":  "#/definitions/ProblemDetails"
+                                                                                                        }
+                                                                                         }
+                                                                             }
+                                                           }
+                                               },
+                  "/api/organiser/events/{eventId}/enrolments":  {
+                                                                     "get":  {
+                                                                                 "tags":  [
+                                                                                              "Organiser"
+                                                                                          ],
+                                                                                 "produces":  [
+                                                                                                  "text/plain",
+                                                                                                  "application/json",
+                                                                                                  "text/json"
+                                                                                              ],
+                                                                                 "parameters":  [
+                                                                                                    {
+                                                                                                        "in":  "path",
+                                                                                                        "name":  "eventId",
+                                                                                                        "required":  true,
+                                                                                                        "type":  "integer",
+                                                                                                        "format":  "int32"
+                                                                                                    }
+                                                                                                ],
+                                                                                 "responses":  {
+                                                                                                   "200":  {
+                                                                                                               "description":  "OK"
+                                                                                                           },
+                                                                                                   "401":  {
+                                                                                                               "description":  "Unauthorized",
+                                                                                                               "schema":  {
+                                                                                                                              "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                          }
+                                                                                                           },
+                                                                                                   "403":  {
+                                                                                                               "description":  "Forbidden",
+                                                                                                               "schema":  {
+                                                                                                                              "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                          }
+                                                                                                           },
+                                                                                                   "404":  {
+                                                                                                               "description":  "Not Found",
+                                                                                                               "schema":  {
+                                                                                                                              "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                          }
+                                                                                                           }
+                                                                                               }
+                                                                             }
+                                                                 },
+                  "/api/participant/dashboard":  {
+                                                     "get":  {
+                                                                 "tags":  [
+                                                                              "Participant"
+                                                                          ],
+                                                                 "produces":  [
+                                                                                  "text/plain",
+                                                                                  "application/json",
+                                                                                  "text/json"
+                                                                              ],
+                                                                 "responses":  {
+                                                                                   "200":  {
+                                                                                               "description":  "OK"
+                                                                                           },
+                                                                                   "401":  {
+                                                                                               "description":  "Unauthorized",
+                                                                                               "schema":  {
+                                                                                                              "$ref":  "#/definitions/ProblemDetails"
+                                                                                                          }
+                                                                                           },
+                                                                                   "403":  {
+                                                                                               "description":  "Forbidden",
+                                                                                               "schema":  {
+                                                                                                              "$ref":  "#/definitions/ProblemDetails"
+                                                                                                          }
+                                                                                           }
+                                                                               }
+                                                             }
+                                                 },
+                  "/api/enrolments/{enrolmentId}/result":  {
+                                                               "post":  {
+                                                                            "tags":  [
+                                                                                         "Results"
+                                                                                     ],
+                                                                            "consumes":  [
+                                                                                             "application/json",
+                                                                                             "text/json",
+                                                                                             "application/*+json"
+                                                                                         ],
+                                                                            "produces":  [
+                                                                                             "text/plain",
+                                                                                             "application/json",
+                                                                                             "text/json"
+                                                                                         ],
+                                                                            "parameters":  [
+                                                                                               {
+                                                                                                   "in":  "path",
+                                                                                                   "name":  "enrolmentId",
+                                                                                                   "required":  true,
+                                                                                                   "type":  "integer",
+                                                                                                   "format":  "int32"
+                                                                                               },
+                                                                                               {
+                                                                                                   "in":  "body",
+                                                                                                   "name":  "body",
+                                                                                                   "schema":  {
+                                                                                                                  "$ref":  "#/definitions/CreateResultRequest"
+                                                                                                              }
+                                                                                               }
+                                                                                           ],
+                                                                            "responses":  {
+                                                                                              "201":  {
+                                                                                                          "description":  "Created"
+                                                                                                      },
+                                                                                              "400":  {
+                                                                                                          "description":  "Bad Request",
+                                                                                                          "schema":  {
+                                                                                                                         "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                     }
+                                                                                                      },
+                                                                                              "401":  {
+                                                                                                          "description":  "Unauthorized",
+                                                                                                          "schema":  {
+                                                                                                                         "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                     }
+                                                                                                      },
+                                                                                              "403":  {
+                                                                                                          "description":  "Forbidden",
+                                                                                                          "schema":  {
+                                                                                                                         "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                     }
+                                                                                                      },
+                                                                                              "404":  {
+                                                                                                          "description":  "Not Found",
+                                                                                                          "schema":  {
+                                                                                                                         "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                     }
+                                                                                                      },
+                                                                                              "409":  {
+                                                                                                          "description":  "Conflict",
+                                                                                                          "schema":  {
+                                                                                                                         "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                     }
+                                                                                                      }
+                                                                                          }
+                                                                        },
+                                                               "get":  {
+                                                                           "tags":  [
+                                                                                        "Results"
+                                                                                    ],
+                                                                           "produces":  [
+                                                                                            "text/plain",
+                                                                                            "application/json",
+                                                                                            "text/json"
+                                                                                        ],
+                                                                           "parameters":  [
+                                                                                              {
+                                                                                                  "in":  "path",
+                                                                                                  "name":  "enrolmentId",
+                                                                                                  "required":  true,
+                                                                                                  "type":  "integer",
+                                                                                                  "format":  "int32"
+                                                                                              }
+                                                                                          ],
+                                                                           "responses":  {
+                                                                                             "200":  {
+                                                                                                         "description":  "OK"
+                                                                                                     },
+                                                                                             "400":  {
+                                                                                                         "description":  "Bad Request",
+                                                                                                         "schema":  {
+                                                                                                                        "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                    }
+                                                                                                     },
+                                                                                             "401":  {
+                                                                                                         "description":  "Unauthorized",
+                                                                                                         "schema":  {
+                                                                                                                        "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                    }
+                                                                                                     },
+                                                                                             "403":  {
+                                                                                                         "description":  "Forbidden",
+                                                                                                         "schema":  {
+                                                                                                                        "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                    }
+                                                                                                     },
+                                                                                             "404":  {
+                                                                                                         "description":  "Not Found",
+                                                                                                         "schema":  {
+                                                                                                                        "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                    }
+                                                                                                     }
+                                                                                         }
+                                                                       },
+                                                               "put":  {
+                                                                           "tags":  [
+                                                                                        "Results"
+                                                                                    ],
+                                                                           "consumes":  [
+                                                                                            "application/json",
+                                                                                            "text/json",
+                                                                                            "application/*+json"
+                                                                                        ],
+                                                                           "produces":  [
+                                                                                            "text/plain",
+                                                                                            "application/json",
+                                                                                            "text/json"
+                                                                                        ],
+                                                                           "parameters":  [
+                                                                                              {
+                                                                                                  "in":  "path",
+                                                                                                  "name":  "enrolmentId",
+                                                                                                  "required":  true,
+                                                                                                  "type":  "integer",
+                                                                                                  "format":  "int32"
+                                                                                              },
+                                                                                              {
+                                                                                                  "in":  "body",
+                                                                                                  "name":  "body",
+                                                                                                  "schema":  {
+                                                                                                                 "$ref":  "#/definitions/UpdateResultRequest"
+                                                                                                             }
+                                                                                              }
+                                                                                          ],
+                                                                           "responses":  {
+                                                                                             "200":  {
+                                                                                                         "description":  "OK"
+                                                                                                     },
+                                                                                             "400":  {
+                                                                                                         "description":  "Bad Request",
+                                                                                                         "schema":  {
+                                                                                                                        "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                    }
+                                                                                                     },
+                                                                                             "401":  {
+                                                                                                         "description":  "Unauthorized",
+                                                                                                         "schema":  {
+                                                                                                                        "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                    }
+                                                                                                     },
+                                                                                             "403":  {
+                                                                                                         "description":  "Forbidden",
+                                                                                                         "schema":  {
+                                                                                                                        "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                    }
+                                                                                                     },
+                                                                                             "404":  {
+                                                                                                         "description":  "Not Found",
+                                                                                                         "schema":  {
+                                                                                                                        "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                    }
+                                                                                                     },
+                                                                                             "409":  {
+                                                                                                         "description":  "Conflict",
+                                                                                                         "schema":  {
+                                                                                                                        "$ref":  "#/definitions/ProblemDetails"
+                                                                                                                    }
+                                                                                                     }
+                                                                                         }
+                                                                       }
+                                                           },
+                  "/api/results/me":  {
+                                          "get":  {
+                                                      "tags":  [
+                                                                   "Results"
+                                                               ],
+                                                      "produces":  [
+                                                                       "text/plain",
+                                                                       "application/json",
+                                                                       "text/json"
+                                                                   ],
+                                                      "responses":  {
+                                                                        "200":  {
+                                                                                    "description":  "OK"
+                                                                                },
+                                                                        "401":  {
+                                                                                    "description":  "Unauthorized",
+                                                                                    "schema":  {
+                                                                                                   "$ref":  "#/definitions/ProblemDetails"
+                                                                                               }
+                                                                                },
+                                                                        "403":  {
+                                                                                    "description":  "Forbidden",
+                                                                                    "schema":  {
+                                                                                                   "$ref":  "#/definitions/ProblemDetails"
+                                                                                               }
+                                                                                }
+                                                                    }
+                                                  }
+                                      },
+                  "/api/events/{eventId}/results":  {
+                                                        "get":  {
+                                                                    "tags":  [
+                                                                                 "Results"
+                                                                             ],
+                                                                    "produces":  [
+                                                                                     "text/plain",
+                                                                                     "application/json",
+                                                                                     "text/json"
+                                                                                 ],
+                                                                    "parameters":  [
+                                                                                       {
+                                                                                           "in":  "path",
+                                                                                           "name":  "eventId",
+                                                                                           "required":  true,
+                                                                                           "type":  "integer",
+                                                                                           "format":  "int32"
+                                                                                       }
+                                                                                   ],
+                                                                    "responses":  {
+                                                                                      "200":  {
+                                                                                                  "description":  "OK"
+                                                                                              },
+                                                                                      "400":  {
+                                                                                                  "description":  "Bad Request",
+                                                                                                  "schema":  {
+                                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                                             }
+                                                                                              },
+                                                                                      "401":  {
+                                                                                                  "description":  "Unauthorized",
+                                                                                                  "schema":  {
+                                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                                             }
+                                                                                              },
+                                                                                      "403":  {
+                                                                                                  "description":  "Forbidden",
+                                                                                                  "schema":  {
+                                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                                             }
+                                                                                              },
+                                                                                      "404":  {
+                                                                                                  "description":  "Not Found",
+                                                                                                  "schema":  {
+                                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                                             }
+                                                                                              }
+                                                                                  }
+                                                                }
+                                                    },
+                  "/api/users/me":  {
+                                        "get":  {
+                                                    "tags":  [
+                                                                 "Users"
+                                                             ],
+                                                    "produces":  [
+                                                                     "text/plain",
+                                                                     "application/json",
+                                                                     "text/json"
+                                                                 ],
+                                                    "responses":  {
+                                                                      "200":  {
+                                                                                  "description":  "OK"
+                                                                              },
+                                                                      "401":  {
+                                                                                  "description":  "Unauthorized",
+                                                                                  "schema":  {
+                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                             }
+                                                                              },
+                                                                      "404":  {
+                                                                                  "description":  "Not Found",
+                                                                                  "schema":  {
+                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                             }
+                                                                              }
+                                                                  }
+                                                },
+                                        "put":  {
+                                                    "tags":  [
+                                                                 "Users"
+                                                             ],
+                                                    "consumes":  [
+                                                                     "application/json",
+                                                                     "text/json",
+                                                                     "application/*+json"
+                                                                 ],
+                                                    "produces":  [
+                                                                     "text/plain",
+                                                                     "application/json",
+                                                                     "text/json"
+                                                                 ],
+                                                    "parameters":  [
+                                                                       {
+                                                                           "in":  "body",
+                                                                           "name":  "body",
+                                                                           "schema":  {
+                                                                                          "$ref":  "#/definitions/UpdateMyProfileRequest"
+                                                                                      }
+                                                                       }
+                                                                   ],
+                                                    "responses":  {
+                                                                      "200":  {
+                                                                                  "description":  "OK"
+                                                                              },
+                                                                      "400":  {
+                                                                                  "description":  "Bad Request",
+                                                                                  "schema":  {
+                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                             }
+                                                                              },
+                                                                      "401":  {
+                                                                                  "description":  "Unauthorized",
+                                                                                  "schema":  {
+                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                             }
+                                                                              },
+                                                                      "404":  {
+                                                                                  "description":  "Not Found",
+                                                                                  "schema":  {
+                                                                                                 "$ref":  "#/definitions/ProblemDetails"
+                                                                                             }
+                                                                              }
+                                                                  }
+                                                }
+                                    },
+                  "/api/users/me/profile-picture":  {
+                                                        "post":  {
+                                                                     "tags":  [
+                                                                                  "Users"
+                                                                              ],
+                                                                     "consumes":  [
+                                                                                      "multipart/form-data"
+                                                                                  ],
+                                                                     "produces":  [
+                                                                                      "text/plain",
+                                                                                      "application/json",
+                                                                                      "text/json"
+                                                                                  ],
+                                                                     "parameters":  [
+                                                                                        {
+                                                                                            "in":  "formData",
+                                                                                            "name":  "File",
+                                                                                            "required":  true,
+                                                                                            "type":  "file"
+                                                                                        }
+                                                                                    ],
+                                                                     "responses":  {
+                                                                                       "200":  {
+                                                                                                   "description":  "OK"
+                                                                                               },
+                                                                                       "400":  {
+                                                                                                   "description":  "Bad Request",
+                                                                                                   "schema":  {
+                                                                                                                  "$ref":  "#/definitions/ProblemDetails"
+                                                                                                              }
+                                                                                               },
+                                                                                       "401":  {
+                                                                                                   "description":  "Unauthorized",
+                                                                                                   "schema":  {
+                                                                                                                  "$ref":  "#/definitions/ProblemDetails"
+                                                                                                              }
+                                                                                               },
+                                                                                       "404":  {
+                                                                                                   "description":  "Not Found",
+                                                                                                   "schema":  {
+                                                                                                                  "$ref":  "#/definitions/ProblemDetails"
+                                                                                                              }
+                                                                                               },
+                                                                                       "503":  {
+                                                                                                   "description":  "Service Unavailable"
+                                                                                               }
+                                                                                   }
+                                                                 }
+                                                    }
+              },
+    "definitions":  {
+                        "CreateCategoryRequest":  {
+                                                      "required":  [
+                                                                       "categoryName",
+                                                                       "categoryType"
+                                                                   ],
+                                                      "type":  "object",
+                                                      "properties":  {
+                                                                         "categoryName":  {
+                                                                                              "maxLength":  100,
+                                                                                              "minLength":  1,
+                                                                                              "type":  "string"
+                                                                                          },
+                                                                         "categoryType":  {
+                                                                                              "minLength":  1,
+                                                                                              "pattern":  "^(Age|Distance)$",
+                                                                                              "type":  "string"
+                                                                                          },
+                                                                         "minAge":  {
+                                                                                        "format":  "int32",
+                                                                                        "maximum":  120,
+                                                                                        "minimum":  0,
+                                                                                        "type":  "integer"
+                                                                                    },
+                                                                         "maxAge":  {
+                                                                                        "format":  "int32",
+                                                                                        "maximum":  120,
+                                                                                        "minimum":  0,
+                                                                                        "type":  "integer"
+                                                                                    },
+                                                                         "categoryDistanceKm":  {
+                                                                                                    "format":  "double",
+                                                                                                    "maximum":  9999.99,
+                                                                                                    "minimum":  0.01,
+                                                                                                    "type":  "number"
+                                                                                                }
+                                                                     },
+                                                      "additionalProperties":  false
+                                                  },
+                        "CreateEnrolmentRequest":  {
+                                                       "type":  "object",
+                                                       "properties":  {
+                                                                          "eventId":  {
+                                                                                          "format":  "int32",
+                                                                                          "maximum":  2147483647,
+                                                                                          "minimum":  1,
+                                                                                          "type":  "integer"
+                                                                                      },
+                                                                          "categoryId":  {
+                                                                                             "format":  "int32",
+                                                                                             "maximum":  2147483647,
+                                                                                             "minimum":  1,
+                                                                                             "type":  "integer"
+                                                                                         }
+                                                                      },
+                                                       "additionalProperties":  false
+                                                   },
+                        "CreateEventEnrolmentRequest":  {
+                                                            "type":  "object",
+                                                            "properties":  {
+                                                                               "categoryId":  {
+                                                                                                  "format":  "int32",
+                                                                                                  "maximum":  2147483647,
+                                                                                                  "minimum":  1,
+                                                                                                  "type":  "integer"
+                                                                                              }
+                                                                           },
+                                                            "additionalProperties":  false
+                                                        },
+                        "CreateEventRequest":  {
+                                                   "required":  [
+                                                                    "description",
+                                                                    "eventDate",
+                                                                    "eventName",
+                                                                    "eventType",
+                                                                    "location"
+                                                                ],
+                                                   "type":  "object",
+                                                   "properties":  {
+                                                                      "eventName":  {
+                                                                                        "maxLength":  150,
+                                                                                        "minLength":  1,
+                                                                                        "type":  "string"
+                                                                                    },
+                                                                      "description":  {
+                                                                                          "maxLength":  1000,
+                                                                                          "minLength":  1,
+                                                                                          "type":  "string"
+                                                                                      },
+                                                                      "eventDate":  {
+                                                                                        "format":  "date",
+                                                                                        "type":  "string"
+                                                                                    },
+                                                                      "location":  {
+                                                                                       "maxLength":  200,
+                                                                                       "minLength":  1,
+                                                                                       "type":  "string"
+                                                                                   },
+                                                                      "distanceKm":  {
+                                                                                         "format":  "double",
+                                                                                         "maximum":  9999.99,
+                                                                                         "minimum":  0.01,
+                                                                                         "type":  "number"
+                                                                                     },
+                                                                      "eventType":  {
+                                                                                        "minLength":  1,
+                                                                                        "pattern":  "^(Run|Walk|Cycle)$",
+                                                                                        "type":  "string"
+                                                                                    }
+                                                                  },
+                                                   "additionalProperties":  false
+                                               },
+                        "CreateResultRequest":  {
+                                                    "type":  "object",
+                                                    "properties":  {
+                                                                       "finishPosition":  {
+                                                                                              "format":  "int32",
+                                                                                              "maximum":  2147483647,
+                                                                                              "minimum":  1,
+                                                                                              "type":  "integer"
+                                                                                          },
+                                                                       "finishTime":  {
+                                                                                          "format":  "date-span",
+                                                                                          "type":  "string"
+                                                                                      }
+                                                                   },
+                                                    "additionalProperties":  false
+                                                },
+                        "LoginRequest":  {
+                                             "required":  [
+                                                              "email",
+                                                              "password"
+                                                          ],
+                                             "type":  "object",
+                                             "properties":  {
+                                                                "email":  {
+                                                                              "format":  "email",
+                                                                              "maxLength":  150,
+                                                                              "minLength":  0,
+                                                                              "type":  "string"
+                                                                          },
+                                                                "password":  {
+                                                                                 "maxLength":  100,
+                                                                                 "minLength":  8,
+                                                                                 "type":  "string"
+                                                                             }
+                                                            },
+                                             "additionalProperties":  false
+                                         },
+                        "ProblemDetails":  {
+                                               "type":  "object",
+                                               "properties":  {
+                                                                  "type":  {
+                                                                               "type":  "string"
+                                                                           },
+                                                                  "title":  {
+                                                                                "type":  "string"
+                                                                            },
+                                                                  "status":  {
+                                                                                 "format":  "int32",
+                                                                                 "type":  "integer"
+                                                                             },
+                                                                  "detail":  {
+                                                                                 "type":  "string"
+                                                                             },
+                                                                  "instance":  {
+                                                                                   "type":  "string"
+                                                                               }
+                                                              },
+                                               "additionalProperties":  {
+
+                                                                        }
+                                           },
+                        "RegisterRequest":  {
+                                                "required":  [
+                                                                 "email",
+                                                                 "firstName",
+                                                                 "lastName",
+                                                                 "password",
+                                                                 "roleName"
+                                                             ],
+                                                "type":  "object",
+                                                "properties":  {
+                                                                   "firstName":  {
+                                                                                     "maxLength":  50,
+                                                                                     "minLength":  0,
+                                                                                     "type":  "string"
+                                                                                 },
+                                                                   "lastName":  {
+                                                                                    "maxLength":  50,
+                                                                                    "minLength":  0,
+                                                                                    "type":  "string"
+                                                                                },
+                                                                   "email":  {
+                                                                                 "format":  "email",
+                                                                                 "maxLength":  150,
+                                                                                 "minLength":  0,
+                                                                                 "type":  "string"
+                                                                             },
+                                                                   "password":  {
+                                                                                    "maxLength":  100,
+                                                                                    "minLength":  8,
+                                                                                    "type":  "string"
+                                                                                },
+                                                                   "phoneNumber":  {
+                                                                                       "maxLength":  20,
+                                                                                       "minLength":  0,
+                                                                                       "type":  "string"
+                                                                                   },
+                                                                   "roleName":  {
+                                                                                    "minLength":  1,
+                                                                                    "pattern":  "^(Participant|Organiser)$",
+                                                                                    "type":  "string"
+                                                                                }
+                                                               },
+                                                "additionalProperties":  false
+                                            },
+                        "UpdateMyProfileRequest":  {
+                                                       "required":  [
+                                                                        "firstName",
+                                                                        "lastName"
+                                                                    ],
+                                                       "type":  "object",
+                                                       "properties":  {
+                                                                          "firstName":  {
+                                                                                            "maxLength":  50,
+                                                                                            "minLength":  1,
+                                                                                            "type":  "string"
+                                                                                        },
+                                                                          "lastName":  {
+                                                                                           "maxLength":  50,
+                                                                                           "minLength":  1,
+                                                                                           "type":  "string"
+                                                                                       },
+                                                                          "phoneNumber":  {
+                                                                                              "format":  "tel",
+                                                                                              "maxLength":  20,
+                                                                                              "minLength":  0,
+                                                                                              "type":  "string"
+                                                                                          }
+                                                                      },
+                                                       "additionalProperties":  false
+                                                   },
+                        "UpdateResultRequest":  {
+                                                    "type":  "object",
+                                                    "properties":  {
+                                                                       "finishPosition":  {
+                                                                                              "format":  "int32",
+                                                                                              "type":  "integer"
+                                                                                          },
+                                                                       "finishTime":  {
+                                                                                          "format":  "date-span",
+                                                                                          "type":  "string"
+                                                                                      }
+                                                                   },
+                                                    "additionalProperties":  false
+                                                }
+                    }
+}
